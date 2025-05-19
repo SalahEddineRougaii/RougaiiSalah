@@ -12,16 +12,14 @@ class CreateAnnoncesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('titre');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->decimal('prix', 10, 2);
             $table->string('ville');
-            $table->string('adresse')->nullable();
+            $table->string('adresse');
             $table->string('type_bien');
-            $table->integer('surface')->nullable();
             $table->integer('nombre_pieces')->nullable();
             $table->string('image')->nullable();
-            $table->string('statut')->default('vente'); // 'vente' ou 'location'
-            $table->boolean('est_publie')->default(false);
+            $table->string('statut')->default('vente');
             $table->timestamps();
         });
     }
@@ -31,3 +29,4 @@ class CreateAnnoncesTable extends Migration
         Schema::dropIfExists('annonces');
     }
 }
+

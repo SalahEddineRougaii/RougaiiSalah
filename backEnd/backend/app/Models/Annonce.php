@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +16,10 @@ class Annonce extends Model
         'ville',
         'adresse',
         'type_bien',
-        'nb_pieces',
+        'nombre_pieces',
         'statut',
         'image',
     ];
 }
+
+

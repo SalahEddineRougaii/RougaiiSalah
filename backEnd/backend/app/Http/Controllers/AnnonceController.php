@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class AnnonceController extends Controller
 {
+    // Ajouter une annonce
     public function store(Request $request)
     {
         try {
@@ -18,8 +19,8 @@ class AnnonceController extends Controller
                 'ville' => 'required|string|max:100',
                 'adresse' => 'required|string|max:255',
                 'type_bien' => 'required|string|max:100',
-                'nb_pieces' => 'required|integer',
-                'statut' => 'required|string|in:vente,location',
+                'nombre_pieces' => 'required|integer',
+                'statut' => 'required|in:vendue,louée',
                 'image' => 'nullable|image|max:2048',
             ]);
 
@@ -31,7 +32,7 @@ class AnnonceController extends Controller
             $annonce->ville = $request->ville;
             $annonce->adresse = $request->adresse;
             $annonce->type_bien = $request->type_bien;
-            $annonce->nb_pieces = $request->nb_pieces;
+            $annonce->nombre_pieces = $request->nombre_pieces;
             $annonce->statut = $request->statut;
 
             if ($request->hasFile('image')) {
@@ -41,25 +42,43 @@ class AnnonceController extends Controller
 
             $annonce->save();
 
-            return response()->json(['message' => 'Annonce créée avec succès', 'annonce' => $annonce], 201);
+            return response()->json([
+                'status' => 'success',
+                'annonce' => $annonce
+            ], 201);
 
         } catch (\Exception $e) {
+            \Log::error('Erreur lors de la création d\'annonce', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             return response()->json([
-                'error' => 'Erreur serveur: ' . $e->getMessage()
+                'error' => 'Erreur serveur',
+                'message' => $e->getMessage()
             ], 500);
         }
     }
 
+    // Récupérer les annonces du vendeur (par user_id)
     public function mesAnnonces(Request $request)
     {
-        $userId = $request->query('user_id');
+        try {
+            $userId = $request->query('user_id');
 
-        if (!$userId) {
-            return response()->json(['error' => 'user_id manquant'], 400);
+            if (!$userId) {
+                return response()->json(['error' => 'user_id manquant'], 400);
+            }
+
+            $annonces = Annonce::where('user_id', $userId)->get();
+
+            return response()->json($annonces);
+
+        } catch (\Exception $e) {
+            \Log::error('Erreur récupération annonces', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json(['error' => 'Erreur serveur'], 500);
         }
-
-        $annonces = Annonce::where('user_id', $userId)->get();
-
-        return response()->json($annonces);
     }
 }
