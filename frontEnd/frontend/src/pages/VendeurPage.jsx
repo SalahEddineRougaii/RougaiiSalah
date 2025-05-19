@@ -11,8 +11,10 @@ import {
 
 const VendeurPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user?.id;
+    const userId = user?.id;
+
   const [annoncesRestantes, setAnnoncesRestantes] = useState(user?.annonces_restantes || 0);
+
   const [annonces, setAnnonces] = useState([]);
   const [form, setForm] = useState({
     titre: "",
@@ -28,6 +30,10 @@ const VendeurPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+     axios.get(`http://127.0.0.1:8000/api/users/${userId}`)
+      .then(res => setAnnoncesRestantes(res.data.annonces_restantes))
+      .catch(() => setAnnoncesRestantes(0));
+
     fetchAnnonces();
   }, []);
 
