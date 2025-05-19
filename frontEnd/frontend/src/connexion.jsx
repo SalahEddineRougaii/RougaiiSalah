@@ -43,25 +43,38 @@ const Connexion = () => {
         },
       });
 
-      if (isSignUp) {
-        message.success("Inscription réussie !");
-        setTimeout(() => setIsSignUp(false), 1500);
-      } else if (response.data?.token) {
-        const { token, user } = response.data;
+if (isSignUp) {
+  message.success("Inscription réussie !");
+  setTimeout(() => setIsSignUp(false), 1500);
+} else if (response.data?.token) {
+  const { token, user } = response.data;
 
-        setAuthHeader(token);
-        setUserContext &&
-          setUserContext({
-            token,
-            name: user.name,
-            role: user.role,
-            id: user.id,
-          });
+  setAuthHeader(token);
+  setUserContext &&
+    setUserContext({
+      token,
+      name: user.name,
+      role: user.role,
+      id: user.id,
+      a_paye: user.a_paye,
+      annonces_restantes: user.annonces_restantes,
+    });
 
-        localStorage.setItem("token", token);
-        navigate(`/${user.role}`);
-        message.success("Connexion réussie !");
-      }
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  console.log("USER CONNECTÉ :", user); // Ajoute ceci
+
+  // Redirection selon le paiement
+if (
+  user.role === "vendeur" &&
+  (!user.a_paye || Number(user.a_paye) === 0 || Number(user.annonces_restantes) === 0)
+) {
+  navigate("/paiement-vendeur", { state: { user } });
+} else {
+  navigate(`/${user.role}`);
+}
+  message.success("Connexion réussie !");
+}
     } catch (err) {
       console.error("Erreur API :", err.response?.data);
       if (err.response?.data?.errors) {

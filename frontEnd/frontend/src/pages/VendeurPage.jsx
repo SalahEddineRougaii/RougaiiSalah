@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import {
   FaDollarSign,
   FaHome,
@@ -9,8 +10,9 @@ import {
 } from "react-icons/fa";
 
 const VendeurPage = () => {
-  const userId = 1;
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
+  const [annoncesRestantes, setAnnoncesRestantes] = useState(user?.annonces_restantes || 0);
   const [annonces, setAnnonces] = useState([]);
   const [form, setForm] = useState({
     titre: "",
@@ -51,6 +53,10 @@ const VendeurPage = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+      if (annoncesRestantes <= 0) {
+    setError("Vous n'avez plus d'annonces disponibles. Veuillez acheter un nouveau pack.");
+    return;
+  }
     try {
       const formData = new FormData();
       formData.append("user_id", userId);
@@ -81,6 +87,12 @@ const VendeurPage = () => {
       });
 
       fetchAnnonces();
+          setAnnoncesRestantes((prev) => {
+      const newRestantes = prev - 1;
+      const updatedUser = { ...user, annonces_restantes: newRestantes };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return newRestantes;
+    });
       setError("");
     } catch (err) {
       setError("Erreur lors de l'ajout : " + (err.response?.data?.message || err.message));
@@ -183,6 +195,9 @@ const VendeurPage = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>Mes annonces</h1>
+      <div style={{ marginBottom: 20, fontWeight: "bold", color: annoncesRestantes > 0 ? "#27ae60" : "#e74c3c" }}>
+  Annonces restantes : {annoncesRestantes}
+</div>
       {error && <div style={styles.error}>{error}</div>}
 
       <div style={styles.annoncesGrid}>
