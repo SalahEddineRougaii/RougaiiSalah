@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\Api\BienController;
+use App\Http\Controllers\PaiementController;
 
 Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
@@ -20,3 +21,5 @@ Route::post('/biens', [BienController::class, 'store']);
 
 Route::post('/annonces', [AnnonceController::class, 'store']);
 Route::get('/annonces/miennes', [AnnonceController::class, 'mesAnnonces']);
+
+Route::post('/paiement', [PaiementController::class, 'payer']);
