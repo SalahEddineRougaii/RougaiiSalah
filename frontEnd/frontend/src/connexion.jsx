@@ -48,6 +48,7 @@ const Connexion = () => {
         setTimeout(() => setIsSignUp(false), 1500);
       } else if (response.data?.token) {
         const { token, user } = response.data;
+        console.log("USER DATA:", user); // Ajoute ceci
 
         setAuthHeader(token);
         setUserContext &&

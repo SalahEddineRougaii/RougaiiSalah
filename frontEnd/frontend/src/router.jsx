@@ -1,20 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import Login from "./pages/Login";
-import DashboardAdmin from "./pages/DashboardAdmin";
-import DashboardEmployee from "./pages/DashboardEmployee";
-import EmployeeList from "./pages/EmployeeList";
-import Register from "./Register";
+import Connexion from "./connexion";
+import AdminPage from "./pages/AdminPage";
+import AcheteurPage from "./pages/AcheteurPage";
+import VendeurPage from "./pages/VendeurPage";
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/admin/dashboard" element={<DashboardAdmin />} />
-      <Route path="/admin/employees" element={<EmployeeList />} />
-      <Route path="/admin/register" element={<Register />} />
-      <Route path="/employee/dashboard" element={<DashboardEmployee />} />
+      <Route path="/" element={<Connexion />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/acheteur" element={<AcheteurPage />} />
+      <Route path="/vendeur" element={<VendeurPage />} />
     </Routes>
   );
 }
