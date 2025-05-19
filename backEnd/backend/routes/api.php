@@ -23,3 +23,5 @@ Route::post('/annonces', [AnnonceController::class, 'store']);
 Route::get('/annonces/miennes', [AnnonceController::class, 'mesAnnonces']);
 
 Route::post('/paiement', [PaiementController::class, 'payer']);
+
+Route::get('/users/{id}', [UsersController::class, 'show']);
