@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,9 +18,12 @@ class Annonce extends Model
         'adresse',
         'type_bien',
         'nombre_pieces',
-        'statut',
         'image',
+        'statut',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
-
-

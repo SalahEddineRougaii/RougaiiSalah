@@ -8,6 +8,9 @@ use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\Api\BienController;
 use App\Http\Controllers\PaiementController;
 
+
+
+
 Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/logout', [UsersController::class, 'logout']);
@@ -25,3 +28,10 @@ Route::get('/annonces/miennes', [AnnonceController::class, 'mesAnnonces']);
 Route::post('/paiement', [PaiementController::class, 'payer']);
 
 Route::get('/users/{id}', [UsersController::class, 'show']);
+
+Route::get('/admin/annonces', [AnnonceController::class, 'index']);
+Route::get('/admin/annonces/{id}', [AnnonceController::class, 'show']);
+Route::put('/admin/annonces/{id}', [AnnonceController::class, 'update']);
+Route::delete('/admin/annonces/{id}', [AnnonceController::class, 'destroy']);
+
+Route::get('/annonces', [AnnonceController::class, 'index']);

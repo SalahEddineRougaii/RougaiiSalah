@@ -81,4 +81,44 @@ class AnnonceController extends Controller
             return response()->json(['error' => 'Erreur serveur'], 500);
         }
     }
+
+
+    // Lister toutes les annonces (admin)
+    public function index()
+    {
+        return Annonce::with('user')->get();
+    }
+
+    // Voir une annonce
+    public function show($id)
+    {
+        $annonce = Annonce::with('user')->find($id);
+        if (!$annonce) {
+            return response()->json(['message' => 'Annonce non trouvée'], 404);
+        }
+        return response()->json($annonce);
+    }
+
+    // Modifier une annonce
+    public function update(Request $request, $id)
+    {
+        $annonce = Annonce::find($id);
+        if (!$annonce) {
+            return response()->json(['message' => 'Annonce non trouvée'], 404);
+        }
+        $annonce->update($request->all());
+        return response()->json($annonce);
+    }
+
+    // Supprimer une annonce
+    public function destroy($id)
+    {
+        $annonce = Annonce::find($id);
+        if (!$annonce) {
+            return response()->json(['message' => 'Annonce non trouvée'], 404);
+        }
+        $annonce->delete();
+        return response()->json(['message' => 'Annonce supprimée']);
+    }
+
 }
