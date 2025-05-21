@@ -16,10 +16,13 @@ const PaiementVendeur = () => {
     setLoading(true);
     try {
       // Appel API pour mettre à jour annonces_restantes
-      await axios.post("http://127.0.0.1:8000/api/paiement", {
+      const response = await axios.post("http://127.0.0.1:8000/api/paiement", {
         user_id: user.id,
         annonces_restantes: activites,
       });
+            const updatedUser = { ...user, annonces_restantes: activites };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
       message.success("Paiement confirmé !");
       navigate("/vendeur");
     } catch (err) {
