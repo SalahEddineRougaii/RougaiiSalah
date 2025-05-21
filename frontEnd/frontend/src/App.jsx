@@ -6,6 +6,11 @@ import AcheteurPage from "./pages/AcheteurPage";
 import VendeurPage from "./pages/VendeurPage";
 import AdminPage from "./pages/AdminPage";
 import PaiementVendeur from "./pages/PaiementVendeur";
+import AnnonceDetail from "./pages/AnnonceDetail";
+
+
+
+
 // Ajoute ici tous les autres imports de pages nécessaires
 
 function App() {
@@ -17,6 +22,7 @@ function App() {
         <Route path="/vendeur" element={<VendeurPage />} />
         <Route path="/acheteur" element={<AcheteurPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/annonce/:id" element={<AnnonceDetail />} />
         {/* Ajoute ici toutes les autres routes nécessaires */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

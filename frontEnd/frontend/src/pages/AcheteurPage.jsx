@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaBed, FaBath, FaGlobe } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 const styles = {
   page: {
@@ -114,6 +116,9 @@ const styles = {
 const AcheteurPage = () => {
   const [annonces, setAnnonces] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
     fetchAnnonces();
@@ -143,15 +148,15 @@ const AcheteurPage = () => {
           <div style={styles.grid}>
             {annonces.map((annonce) => (
               <div key={annonce.id} style={styles.card}>
-                <img
-                  src={
-                    annonce.image
-                      ? `http://127.0.0.1:8000/storage/${annonce.image}`
-                      : "https://via.placeholder.com/260x160?text=Pas+de+photo"
-                  }
-                  alt={annonce.titre}
-                  style={styles.image}
-                />
+<img
+  src={
+    annonce.images && annonce.images.length > 0
+      ? `http://127.0.0.1:8000/storage/${annonce.images[0].image_path}`
+      : "https://via.placeholder.com/260x160?text=Pas+de+photo"
+  }
+  alt={annonce.titre}
+  style={styles.image}
+/>
                 <div style={styles.cardTitle}>{annonce.titre}</div>
                 <div style={styles.info}>{annonce.ville}</div>
                 <div style={styles.statut}>{annonce.statut}</div>
@@ -164,8 +169,9 @@ const AcheteurPage = () => {
                     <FaGlobe color="#1e824c" /> {annonce.surface} m²
                   </div>
                 </div>
-                <button style={styles.button}>Voir détails</button>
-              </div>
+    <button style={styles.button} onClick={() => navigate(`/annonce/${annonce.id}`)}>
+      Voir détails
+    </button>              </div>
             ))}
           </div>
         )}
